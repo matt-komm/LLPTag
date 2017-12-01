@@ -27,29 +27,6 @@ class DisplacedGenVertexProducer:
     
 {
     private:    
-    
-        struct SortByLLPFlavor
-        {
-            bool operator() (const DisplacedGenVertex* v1, const DisplacedGenVertex* v2) const
-            {
-                if (v1->motherLongLivedParticle.isNull() and v2->motherLongLivedParticle.isNull())
-                {
-                    return true; //arbitrary order
-                }
-                else if (v1->motherLongLivedParticle.isNonnull() and v2->motherLongLivedParticle.isNull())
-                {
-                    return true;
-                }
-                else if (v1->motherLongLivedParticle.isNull() and v2->motherLongLivedParticle.isNonnull())
-                {
-                    return false;
-                }
-                
-                return getHadronFlavor(*v1->motherLongLivedParticle)>getHadronFlavor(*v2->motherLongLivedParticle);
-            }
-        };
-    
-    
         static double distance(const reco::Candidate::Point& p1, const reco::Candidate::Point& p2)
         {
             return std::sqrt((p1-p2).mag2());
@@ -66,67 +43,6 @@ class DisplacedGenVertexProducer:
             return std::max({nq1,nq2,nq3})+n*10000+(n>0 and nL==9)*100;
         }
         
-        
-        static bool isHadron(const reco::GenParticle& genParticle, int flavour)
-        {
-            int absPdgId = std::abs(genParticle.pdgId());
-            //int nj  = (absPdgId/      1)%10; //spin
-            int nq3 = (absPdgId/     10)%10; //quark content
-            int nq2 = (absPdgId/    100)%10; //quark content
-            int nq1 = (absPdgId/   1000)%10; //quark content
-            //int nL  = (absPdgId/  10000)%10; //orbit
-            //int nR  = (absPdgId/ 100000)%10; //excitation
-            //int n   = (absPdgId/1000000)%10; //0 for SM particles, 1 for susy bosons/left-handed fermions, 2 for right-handed fermions
-            if ( nq3 == 0)
-            {
-                return false; //diquark
-            }
-            if ( nq1 == 0 and nq2 == flavour)
-            {
-                return true; //meson
-            }
-            if ( nq1 == flavour)
-            {
-                return true; //baryon
-            }
-            return false;
-        }
-        
-        static bool isGluinoHadron(const reco::GenParticle& genParticle)
-        {
-            int absPdgId = std::abs(genParticle.pdgId());
-            //int nj  = (absPdgId/      1)%10; //spin
-            //int nq3 = (absPdgId/     10)%10; //quark content
-            int nq2 = (absPdgId/    100)%10; //quark content
-            int nq1 = (absPdgId/   1000)%10; //quark content
-            int nL  = (absPdgId/  10000)%10; //orbit
-            int nR  = (absPdgId/ 100000)%10; //excitation
-            int n   = (absPdgId/1000000)%10; //0 for SM particles, 1 for susy bosons/left-handed fermions, 2 for right-handed fermions
-            if (n!=1 or nR!=0)
-            {
-                return false; //require susy hadron in groundstate
-            }
-            if (nL ==0 and nq1==0 and nq2==9)
-            {
-                return true; //gluinoball
-            }
-            if (nL ==0 and nq1 == 9)
-            {
-                return true; //gluino + 2 quarks
-            }
-            if ( nL == 9)
-            {
-                return true; //gluino + 3 quarks
-            }
-            return false;
-        }
-        
-        static bool isGluino(const reco::GenParticle& genParticle)
-        {
-            int absPdgId = std::abs(genParticle.pdgId());
-            return absPdgId==1000021;
-        }     
-
         static bool displacedDecay(const reco::GenParticle& genParticle)
         {
             for (unsigned int idaughter = 0; idaughter<genParticle.numberOfDaughters(); ++idaughter)
@@ -315,30 +231,54 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
 
     for (unsigned int ijet = 0; ijet < genJetCollection->size(); ++ijet)
     {
-        std::vector<DisplacedGenVertex*> matchedVertices;
+        std::vector<unsigned int> matchedVerticesIndices;
         for (const reco::GenParticle* genParticle: genJetCollection->at(ijet).getGenConstituents())
         {
             auto foundGenParticleIt = genParticleToVertexGroupMap.find((size_t)genParticle); 
             if (foundGenParticleIt!=genParticleToVertexGroupMap.end())
             {
-                if (std::find(matchedVertices.begin(),matchedVertices.end(),&displacedGenVertices->at(foundGenParticleIt->second))==matchedVertices.end())
+                if (std::find(matchedVerticesIndices.begin(),matchedVerticesIndices.end(),foundGenParticleIt->second)==matchedVerticesIndices.end())
                 {
-                    matchedVertices.push_back(&displacedGenVertices->at(foundGenParticleIt->second));
+                    matchedVerticesIndices.push_back(foundGenParticleIt->second);
                 }
             }
         }
-        if (matchedVertices.size()==0)
+        if (matchedVerticesIndices.size()==0)
         {
             continue;
         }
-        else if (matchedVertices.size()==1)
+        else if (matchedVerticesIndices.size()==1)
         {
-            matchedVertices[0]->genJets.push_back(genJetCollection->ptrAt(ijet));
+            displacedGenVertices->at(matchedVerticesIndices.front()).genJets.push_back(genJetCollection->ptrAt(ijet));
         }
-        else //2 or more
+        else if (matchedVerticesIndices.size()>=2)
         {
-            std::sort(matchedVertices.begin(),matchedVertices.end(),SortByLLPFlavor());
-            matchedVertices[0]->genJets.push_back(genJetCollection->ptrAt(ijet)); //no cross cleaning -> multiple jets can originate from one vertex
+            auto displacedVertexIndexIt = std::max_element(matchedVerticesIndices.begin(),matchedVerticesIndices.end(),
+                [&displacedGenVertices](const unsigned int& iv1, const unsigned int& iv2)
+                {
+
+                    const DisplacedGenVertex& v1 = displacedGenVertices->at(iv1);
+                    const DisplacedGenVertex& v2 = displacedGenVertices->at(iv2);
+                    
+                    if (v1.motherLongLivedParticle.isNull() and v2.motherLongLivedParticle.isNull())
+                    {
+                        return true; //arbitrary order
+                    }
+                    else if (v1.motherLongLivedParticle.isNonnull() and v2.motherLongLivedParticle.isNull())
+                    {
+                        return true;
+                    }
+                    else if (v1.motherLongLivedParticle.isNull() and v2.motherLongLivedParticle.isNonnull())
+                    {
+                        return false;
+                    }
+                    
+                    return getHadronFlavor(*v1.motherLongLivedParticle)>getHadronFlavor(*v2.motherLongLivedParticle);
+                }
+            );
+            
+            displacedGenVertices->at(*displacedVertexIndexIt).genJets.push_back(genJetCollection->ptrAt(ijet)); //no cross cleaning -> multiple jets can originate from one vertex
+            
         }
     }
     
