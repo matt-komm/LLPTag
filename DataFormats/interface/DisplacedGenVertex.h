@@ -1,5 +1,5 @@
-#ifndef CMGTools_RA1_DisplacedGenVertex_h
-#define CMGTools_RA1_DisplacedGenVertex_h
+#ifndef LLPTag_DataFormats_DisplacedGenVertex_h
+#define LLPTag_DataFormats_DisplacedGenVertex_h
 
 #include "DataFormats/Common/interface/RefProd.h"
 
