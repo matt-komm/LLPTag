@@ -13,7 +13,7 @@
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Utilities/interface/Exception.h"
 
-#include "LLPTag/DataFormats/interface/DisplacedGenVertex.h"
+#include "XTag/DataFormats/interface/DisplacedGenVertex.h"
 
 #include "SimGeneral/HepPDTRecord/interface/ParticleDataTable.h"
 #include "DataFormats/PatCandidates/interface/PackedGenParticle.h"
@@ -21,6 +21,8 @@
 
 #include "DataFormats/Math/interface/deltaR.h"
 
+using xtag::DisplacedGenVertex;
+using xtag::DisplacedGenVertexCollection;
 
 class DisplacedGenVertexProducer:
     public edm::stream::EDProducer<>

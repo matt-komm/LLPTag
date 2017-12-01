@@ -1,21 +1,21 @@
-#include "LLPTag/DataFormats/interface/DisplacedGenVertex.h"
+#include "XTag/DataFormats/interface/DisplacedGenVertex.h"
 #include "DataFormats/Common/interface/Wrapper.h"
 
 namespace { 
 
 struct dictionary_ra1
 {
-    DisplacedGenVertexCollection dummy0;
-    edm::Wrapper<DisplacedGenVertexCollection> dummy1;
+    xtag::DisplacedGenVertexCollection dummy0;
+    edm::Wrapper<xtag::DisplacedGenVertexCollection> dummy1;
     
-    edm::Ptr<DisplacedGenVertex> dummy2;
-    edm::Wrapper<edm::Ptr<DisplacedGenVertex>> dummy3;
+    edm::Ptr<xtag::DisplacedGenVertex> dummy2;
+    edm::Wrapper<edm::Ptr<xtag::DisplacedGenVertex>> dummy3;
     
-    edm::Ptr<DisplacedGenVertexCollection> dummy4;
-    edm::Wrapper<edm::Ptr<DisplacedGenVertexCollection>> dummy5;
+    edm::Ptr<xtag::DisplacedGenVertexCollection> dummy4;
+    edm::Wrapper<edm::Ptr<xtag::DisplacedGenVertexCollection>> dummy5;
 
-    edm::PtrVector<DisplacedGenVertexCollection> dummy6;
-    edm::Wrapper<edm::PtrVector<DisplacedGenVertexCollection>> dummy7;
+    edm::PtrVector<xtag::DisplacedGenVertexCollection> dummy6;
+    edm::Wrapper<edm::PtrVector<xtag::DisplacedGenVertexCollection>> dummy7;
     
     edm::Ptr<reco::GenParticle> dummy8;
     edm::Wrapper<edm::Ptr<reco::GenParticle>> dummy9;

@@ -1,20 +1,20 @@
 <lcgdict>
-    <class name="DisplacedGenVertex">
+    <class name="xtag::DisplacedGenVertex">
     </class>
-    <class name="std::vector<DisplacedGenVertex>"/>
-    <class name="edm::Wrapper<std::vector<DisplacedGenVertex> >"/>
-    <class name="edm::Ref<std::vector<DisplacedGenVertex>>"/>
-    <class name="edm::Wrapper<edm::Ref<std::vector<DisplacedGenVertex>>>"/>
-    <class name="edm::RefVector<std::vector<DisplacedGenVertex>>"/>
-    <class name="edm::Wrapper<edm::RefVector<std::vector<DisplacedGenVertex>>>"/>
+    <class name="std::vector<xtag::DisplacedGenVertex>"/>
+    <class name="edm::Wrapper<std::vector<xtag::DisplacedGenVertex> >"/>
+    <class name="edm::Ref<std::vector<xtag::DisplacedGenVertex>>"/>
+    <class name="edm::Wrapper<edm::Ref<std::vector<xtag::DisplacedGenVertex>>>"/>
+    <class name="edm::RefVector<std::vector<xtag::DisplacedGenVertex>>"/>
+    <class name="edm::Wrapper<edm::RefVector<std::vector<xtag::DisplacedGenVertex>>>"/>
 
-    <class name="edm::Ptr<DisplacedGenVertex>"/>
-    <class name="edm::Wrapper<edm::Ptr<DisplacedGenVertex>>"/>
+    <class name="edm::Ptr<xtag::DisplacedGenVertex>"/>
+    <class name="edm::Wrapper<edm::Ptr<xtag::DisplacedGenVertex>>"/>
     
-    <class name="edm::Ptr<std::vector<DisplacedGenVertex>>"/>
-    <class name="edm::Wrapper<edm::Ptr<std::vector<DisplacedGenVertex>>>"/>
-    <class name="edm::PtrVector<DisplacedGenVertex>"/>
-    <class name="edm::Wrapper<edm::PtrVector<DisplacedGenVertex>>"/>
+    <class name="edm::Ptr<std::vector<xtag::DisplacedGenVertex>>"/>
+    <class name="edm::Wrapper<edm::Ptr<std::vector<xtag::DisplacedGenVertex>>>"/>
+    <class name="edm::PtrVector<xtag::DisplacedGenVertex>"/>
+    <class name="edm::Wrapper<edm::PtrVector<xtag::DisplacedGenVertex>>"/>
     
     <class name="edm::Ptr<reco::GenParticle>"/>
     <class name="edm::Wrapper<edm::Ptr<reco::GenParticle>>"/>

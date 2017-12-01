@@ -1,4 +1,7 @@
-#include "LLPTag/DataFormats/interface/DisplacedGenVertex.h"
+#include "XTag/DataFormats/interface/DisplacedGenVertex.h"
+
+namespace xtag
+{
 
 double DisplacedGenVertex::d3d() const
 {
@@ -47,4 +50,4 @@ double DisplacedGenVertex::dxy() const
     return std::sqrt(x*x+y*y);
 }
 
-
+}

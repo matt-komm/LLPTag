@@ -1,5 +1,5 @@
-#ifndef LLPTag_DataFormats_DisplacedGenVertex_h
-#define LLPTag_DataFormats_DisplacedGenVertex_h
+#ifndef XTAG_DATAFORMATS_DISPLACEDGENVERTEX_H
+#define XTAG_DATAFORMATS_DISPLACEDGENVERTEX_H
 
 #include "DataFormats/Common/interface/RefProd.h"
 
@@ -17,6 +17,8 @@
 
 #include <vector>
 
+namespace xtag
+{
 
 // a simple class
 struct DisplacedGenVertex
@@ -47,5 +49,7 @@ struct DisplacedGenVertex
 };
 
 typedef std::vector<DisplacedGenVertex> DisplacedGenVertexCollection;
+
+}
 
 #endif
