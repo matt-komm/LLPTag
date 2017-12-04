@@ -27,7 +27,7 @@ process.options   = cms.untracked.PSet(
     allowUnscheduled = cms.untracked.bool(True)
 )
 
-process.load('LLPTag.DisplacedVertex.GenDisplacedVertices_cff')
+process.load('XTag.DisplacedVertex.GenDisplacedVertices_cff')
 
 process.MINIAODSIMoutput = cms.OutputModule("PoolOutputModule",                     
     compressionAlgorithm = cms.untracked.string('LZMA'),    

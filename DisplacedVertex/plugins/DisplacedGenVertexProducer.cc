@@ -242,9 +242,11 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
                 if (std::find(matchedVerticesIndices.begin(),matchedVerticesIndices.end(),foundGenParticleIt->second)==matchedVerticesIndices.end())
                 {
                     matchedVerticesIndices.push_back(foundGenParticleIt->second);
+                    //displacedGenVertices->at(foundGenParticleIt->second).genJets.push_back(genJetCollection->ptrAt(ijet)); //no cross cleaning -> multiple jets can originate from one vertex
                 }
             }
         }
+        
         if (matchedVerticesIndices.size()==0)
         {
             continue;
@@ -264,24 +266,24 @@ DisplacedGenVertexProducer::produce(edm::Event& iEvent, const edm::EventSetup& i
                     
                     if (v1.motherLongLivedParticle.isNull() and v2.motherLongLivedParticle.isNull())
                     {
-                        return true; //arbitrary order
+                        return false; //arbitrary order
                     }
                     else if (v1.motherLongLivedParticle.isNonnull() and v2.motherLongLivedParticle.isNull())
                     {
-                        return true;
+                        return false;
                     }
                     else if (v1.motherLongLivedParticle.isNull() and v2.motherLongLivedParticle.isNonnull())
                     {
-                        return false;
+                        return true;
                     }
                     
-                    return getHadronFlavor(*v1.motherLongLivedParticle)>getHadronFlavor(*v2.motherLongLivedParticle);
+                    return getHadronFlavor(*v1.motherLongLivedParticle)<getHadronFlavor(*v2.motherLongLivedParticle);
                 }
             );
             
             displacedGenVertices->at(*displacedVertexIndexIt).genJets.push_back(genJetCollection->ptrAt(ijet)); //no cross cleaning -> multiple jets can originate from one vertex
-            
         }
+        
     }
     
     //TODO: collaps vertices if llp is stable particle e.g. proton/pion/kaon
