@@ -2,7 +2,7 @@
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/EventSetup.h"
 #include "FWCore/Framework/interface/MakerMacros.h"
-#include "FWCore/Framework/interface/EDProducer.h"
+#include "FWCore/Framework/interface/one/EDProducer.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "DataFormats/Common/interface/Handle.h"
@@ -11,7 +11,7 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "HepPDT/ParticleID.hh"
 
-class MergedGenParticleProducer : public edm::EDProducer {
+class MergedGenParticleProducer : public edm::one::EDProducer<> {
  public:
   explicit MergedGenParticleProducer(const edm::ParameterSet &);
   ~MergedGenParticleProducer();

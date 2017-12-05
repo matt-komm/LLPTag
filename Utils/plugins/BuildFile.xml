@@ -7,7 +7,10 @@
 <use   name="DataFormats/PatCandidates"/>
 <use   name="DataFormats/Candidate"/>
 <use   name="DataFormats/HepMCCandidate"/>
-<library file="*.cc" name="LLPTagInfoMergedGenParticleProducer">
+<library file="MergedGenParticleProducer.cc" name="XTagInfoMergedGenParticleProducer">
+  <flags EDM_PLUGIN="1"/>
+</library>
+<library file="RandomEventFilter.cc" name="XTagInfoRandomEventFilter">
   <flags EDM_PLUGIN="1"/>
 </library>
 
